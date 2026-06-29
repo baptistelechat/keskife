@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kronik · Papier Millimétré — 3 variantes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============================================================
+       PAGE
+    ============================================================ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #0a0a0f;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        padding: 3rem 2rem 6rem;
+      }
+
+      .page-intro {
+        text-align: center;
+        margin-bottom: 3.5rem;
+      }
+      .page-intro .eyebrow {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #3d6acc;
+        margin-bottom: 0.75rem;
+      }
+      .page-intro h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #e8e8f0;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.75rem;
+      }
+      .page-intro p {
+        font-size: 0.9375rem;
+        color: #6b6b80;
+      }
+
+      .sep {
+        width: 40px;
+        height: 1px;
+        background: #2a2a38;
+        margin: 0 auto 2.5rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: 1fr;
+          max-width: 480px;
+        }
+      }
+
+      /* ============================================================
+       MOODBOARD WRAPPER
+    ============================================================ */
+      .mb {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid transparent;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .mb:hover {
+        transform: translateY(-6px);
+      }
+
+      .mb-1:hover {
+        box-shadow:
+          0 32px 80px rgba(61, 106, 204, 0.12),
+          0 8px 24px rgba(0, 0, 0, 0.3);
+        border-color: rgba(61, 106, 204, 0.2);
+      }
+      .mb-2:hover {
+        box-shadow:
+          0 32px 80px rgba(212, 162, 10, 0.12),
+          0 8px 24px rgba(0, 0, 0, 0.5);
+        border-color: rgba(212, 162, 10, 0.2);
+      }
+      .mb-3:hover {
+        box-shadow:
+          0 32px 80px rgba(46, 107, 64, 0.12),
+          0 8px 24px rgba(0, 0, 0, 0.25);
+        border-color: rgba(46, 107, 64, 0.2);
+      }
+
+      /* ============================================================
+       SHARED CARD INTERNALS
+    ============================================================ */
+      .mb-header {
+        padding: 0.875rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .mb-logo {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .mb-tabs {
+        display: flex;
+        gap: 2px;
+        border-radius: 6px;
+        padding: 3px;
+      }
+      .mb-tab {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 4px;
+      }
+
+      .mb-content {
+        padding: 1.125rem 1.25rem 0;
+        background-image:
+          linear-gradient(var(--grid-major) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+          linear-gradient(var(--grid-minor) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+        background-size:
+          48px 48px,
+          48px 48px,
+          12px 12px,
+          12px 12px;
+      }
+
+      .mb-daterow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.875rem;
+      }
+      .mb-datelabel {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .mb-dateval {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.6875rem;
+      }
+
+      .mb-card {
+        border-radius: 4px;
+        padding: 0.75rem 0.875rem;
+        margin-bottom: 0.5rem;
+        border-style: solid;
+        border-width: 1px;
+      }
+      .mb-card-title {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+      }
+      .mb-card-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .mb-badge {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.5625rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 1px 5px;
+        border-radius: 2px;
+        border: 1px solid;
+      }
+      .mb-time {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.625rem;
+      }
+      .mb-dur {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.625rem;
+        font-weight: 500;
+        margin-left: auto;
+      }
+
+      /* Stats mini-chart */
+      .mb-chart-wrap {
+        padding: 1rem 1.25rem 1rem;
+        background-image:
+          linear-gradient(var(--grid-major) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+          linear-gradient(var(--grid-minor) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+        background-size:
+          48px 48px,
+          48px 48px,
+          12px 12px,
+          12px 12px;
+      }
+      .mb-chart-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.5625rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .mb-bars {
+        display: flex;
+        gap: 4px;
+        align-items: flex-end;
+        height: 36px;
+      }
+      .mb-bar {
+        flex: 1;
+        border-radius: 3px 3px 0 0;
+        min-height: 4px;
+        opacity: 0.8;
+      }
+
+      .mb-type {
+        padding: 1rem 1.25rem;
+      }
+      .mb-type-h {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.01em;
+      }
+      .mb-type-mono {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.625rem;
+        letter-spacing: 0.06em;
+      }
+
+      .mb-swatches {
+        display: flex;
+        gap: 5px;
+        padding: 0.875rem 1.25rem;
+      }
+      .swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .dir-label {
+        padding: 1.25rem 1.25rem 1.5rem;
+      }
+      .dir-eyebrow {
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+      }
+      .dir-name {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 1.0625rem;
+        font-weight: 600;
+        margin-bottom: 0.375rem;
+      }
+      .dir-tagline {
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 0.8125rem;
+        line-height: 1.55;
+      }
+
+      /* ============================================================
+       VARIANTE B1 — CLASSIQUE (crème + bleu marine)
+    ============================================================ */
+      .mb-1 {
+        --grid-major: rgba(61, 106, 204, 0.09);
+        --grid-minor: rgba(61, 106, 204, 0.04);
+        background: #f7f3ec;
+      }
+      .mb-1 .mb-header {
+        background: #1e2d4a;
+      }
+      .mb-1 .mb-logo {
+        color: #ffffff;
+      }
+      .mb-1 .mb-tabs {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .mb-1 .mb-tab {
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .mb-1 .mb-tab.on {
+        background: rgba(61, 106, 204, 0.45);
+        color: #ffffff;
+      }
+
+      .mb-1 .mb-content {
+        background-color: #f7f3ec;
+      }
+      .mb-1 .mb-datelabel {
+        color: #3d6acc;
+      }
+      .mb-1 .mb-dateval {
+        color: #7a8ea8;
+      }
+
+      .mb-1 .mb-card {
+        background: rgba(255, 252, 248, 0.9);
+        border-color: rgba(61, 106, 204, 0.14);
+      }
+      .mb-1 .mb-card-title {
+        color: #1e2d4a;
+      }
+      .mb-1 .mb-time {
+        color: #7a8ea8;
+      }
+      .mb-1 .mb-dur {
+        color: #3d6acc;
+      }
+
+      .mb-1 .mb-chart-wrap {
+        background-color: #f7f3ec;
+        border-top: 1px solid rgba(61, 106, 204, 0.1);
+      }
+      .mb-1 .mb-chart-label {
+        color: rgba(61, 106, 204, 0.6);
+      }
+
+      .mb-1 .mb-type {
+        background: #f7f3ec;
+        border-top: 1px solid rgba(61, 106, 204, 0.1);
+      }
+      .mb-1 .mb-type-h {
+        color: #1e2d4a;
+      }
+      .mb-1 .mb-type-mono {
+        color: #3d6acc;
+      }
+
+      .mb-1 .mb-swatches {
+        background: #f7f3ec;
+        border-top: 1px solid rgba(61, 106, 204, 0.1);
+      }
+
+      .mb-1 .dir-label {
+        background: #f7f3ec;
+        border-top: 1px solid rgba(61, 106, 204, 0.12);
+      }
+      .mb-1 .dir-eyebrow {
+        color: #3d6acc;
+      }
+      .mb-1 .dir-name {
+        color: #1e2d4a;
+      }
+      .mb-1 .dir-tagline {
+        color: #6b7e98;
+      }
+
+      /* ============================================================
+       VARIANTE B2 — NUIT D'ATELIER (ardoise + or chaud)
+    ============================================================ */
+      .mb-2 {
+        --grid-major: rgba(212, 162, 10, 0.08);
+        --grid-minor: rgba(212, 162, 10, 0.035);
+        background: #1c2330;
+      }
+      .mb-2 .mb-header {
+        background: #141b27;
+        border-bottom: 1px solid rgba(212, 162, 10, 0.12);
+      }
+      .mb-2 .mb-logo {
+        color: #e8e4d8;
+      }
+      .mb-2 .mb-tabs {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .mb-2 .mb-tab {
+        color: rgba(232, 228, 216, 0.4);
+      }
+      .mb-2 .mb-tab.on {
+        background: rgba(212, 162, 10, 0.18);
+        color: #d4a20a;
+      }
+
+      .mb-2 .mb-content {
+        background-color: #1c2330;
+      }
+      .mb-2 .mb-datelabel {
+        color: rgba(212, 162, 10, 0.85);
+      }
+      .mb-2 .mb-dateval {
+        color: rgba(232, 228, 216, 0.35);
+      }
+
+      .mb-2 .mb-card {
+        background: #222d3e;
+        border-color: rgba(232, 228, 216, 0.07);
+      }
+      .mb-2 .mb-card-title {
+        color: #e8e4d8;
+      }
+      .mb-2 .mb-time {
+        color: rgba(232, 228, 216, 0.4);
+      }
+      .mb-2 .mb-dur {
+        color: #d4a20a;
+      }
+
+      .mb-2 .mb-chart-wrap {
+        background-color: #1c2330;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .mb-2 .mb-chart-label {
+        color: rgba(212, 162, 10, 0.5);
+      }
+
+      .mb-2 .mb-type {
+        background: #1c2330;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .mb-2 .mb-type-h {
+        color: #e8e4d8;
+      }
+      .mb-2 .mb-type-mono {
+        color: #d4a20a;
+      }
+
+      .mb-2 .mb-swatches {
+        background: #1c2330;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .mb-2 .dir-label {
+        background: #141b27;
+        border-top: 1px solid rgba(212, 162, 10, 0.12);
+      }
+      .mb-2 .dir-eyebrow {
+        color: #d4a20a;
+      }
+      .mb-2 .dir-name {
+        color: #e8e4d8;
+      }
+      .mb-2 .dir-tagline {
+        color: rgba(232, 228, 216, 0.45);
+      }
+
+      /* ============================================================
+       VARIANTE B3 — CALQUE FORÊT (blanc-vert + encre verte)
+    ============================================================ */
+      .mb-3 {
+        --grid-major: rgba(30, 90, 50, 0.1);
+        --grid-minor: rgba(30, 90, 50, 0.045);
+        background: #f2f6f1;
+      }
+      .mb-3 .mb-header {
+        background: #1b3a2a;
+      }
+      .mb-3 .mb-logo {
+        color: #ffffff;
+      }
+      .mb-3 .mb-tabs {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .mb-3 .mb-tab {
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .mb-3 .mb-tab.on {
+        background: rgba(46, 107, 64, 0.5);
+        color: #ffffff;
+      }
+
+      .mb-3 .mb-content {
+        background-color: #f2f6f1;
+      }
+      .mb-3 .mb-datelabel {
+        color: #2e6b40;
+      }
+      .mb-3 .mb-dateval {
+        color: #7a9480;
+      }
+
+      .mb-3 .mb-card {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(30, 90, 50, 0.14);
+      }
+      .mb-3 .mb-card-title {
+        color: #1b3a2a;
+      }
+      .mb-3 .mb-time {
+        color: #7a9480;
+      }
+      .mb-3 .mb-dur {
+        color: #2e6b40;
+      }
+
+      .mb-3 .mb-chart-wrap {
+        background-color: #f2f6f1;
+        border-top: 1px solid rgba(30, 90, 50, 0.1);
+      }
+      .mb-3 .mb-chart-label {
+        color: rgba(46, 107, 64, 0.6);
+      }
+
+      .mb-3 .mb-type {
+        background: #f2f6f1;
+        border-top: 1px solid rgba(30, 90, 50, 0.1);
+      }
+      .mb-3 .mb-type-h {
+        color: #1b3a2a;
+      }
+      .mb-3 .mb-type-mono {
+        color: #2e6b40;
+      }
+
+      .mb-3 .mb-swatches {
+        background: #f2f6f1;
+        border-top: 1px solid rgba(30, 90, 50, 0.1);
+      }
+
+      .mb-3 .dir-label {
+        background: #f2f6f1;
+        border-top: 1px solid rgba(30, 90, 50, 0.12);
+      }
+      .mb-3 .dir-eyebrow {
+        color: #2e6b40;
+      }
+      .mb-3 .dir-name {
+        color: #1b3a2a;
+      }
+      .mb-3 .dir-tagline {
+        color: #5c7860;
+      }
+
+      /* ============================================================
+       TAG BADGE COLORS (shared across all variants)
+    ============================================================ */
+      .badge-dev-1 {
+        color: #2563eb;
+        border-color: rgba(59, 130, 246, 0.4);
+        background: rgba(59, 130, 246, 0.08);
+      }
+      .badge-prod-1 {
+        color: #059669;
+        border-color: rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.08);
+      }
+      .badge-reun-1 {
+        color: #d97706;
+        border-color: rgba(245, 158, 11, 0.4);
+        background: rgba(245, 158, 11, 0.08);
+      }
+
+      .badge-dev-2 {
+        color: #60a5fa;
+        border-color: rgba(96, 165, 250, 0.35);
+        background: rgba(96, 165, 250, 0.1);
+      }
+      .badge-prod-2 {
+        color: #34d399;
+        border-color: rgba(52, 211, 153, 0.35);
+        background: rgba(52, 211, 153, 0.1);
+      }
+      .badge-reun-2 {
+        color: #fcd34d;
+        border-color: rgba(252, 211, 77, 0.35);
+        background: rgba(252, 211, 77, 0.1);
+      }
+
+      .badge-dev-3 {
+        color: #2563eb;
+        border-color: rgba(59, 130, 246, 0.4);
+        background: rgba(59, 130, 246, 0.07);
+      }
+      .badge-prod-3 {
+        color: #059669;
+        border-color: rgba(16, 185, 129, 0.4);
+        background: rgba(16, 185, 129, 0.07);
+      }
+      .badge-reun-3 {
+        color: #d97706;
+        border-color: rgba(245, 158, 11, 0.4);
+        background: rgba(245, 158, 11, 0.07);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-intro">
+      <div class="eyebrow">Direction B · Papier Millimétré</div>
+      <h1>3 variantes de la même direction</h1>
+      <p>
+        Même grille, même typographie IBM Plex — trois ambiances différentes.
+      </p>
+    </div>
+    <div class="sep"></div>
+
+    <div class="grid">
+      <!-- ===========================
+         B1 — CLASSIQUE
+    =========================== -->
+      <div class="mb mb-1">
+        <div class="mb-header">
+          <div class="mb-logo">Kronik</div>
+          <div class="mb-tabs">
+            <div class="mb-tab on">Journal</div>
+            <div class="mb-tab">Stats</div>
+          </div>
+        </div>
+        <div class="mb-content">
+          <div class="mb-daterow">
+            <span class="mb-datelabel">Journal du jour</span>
+            <span class="mb-dateval">2026-06-29</span>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #3b82f6">
+            <div class="mb-card-title">Développement API REST</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-dev-1">Dev</span>
+              <span class="mb-time">09:00 → 12:30</span>
+              <span class="mb-dur">3h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #10b981">
+            <div class="mb-card-title">Revue plans — fondations</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-prod-1">Prod</span>
+              <span class="mb-time">13:30 → 15:00</span>
+              <span class="mb-dur">1h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #f59e0b">
+            <div class="mb-card-title">Point hebdomadaire</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-reun-1">Réunion</span>
+              <span class="mb-time">15:00 → 16:00</span>
+              <span class="mb-dur">1h00</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-chart-wrap">
+          <div class="mb-chart-label">Répartition — semaine</div>
+          <div class="mb-bars">
+            <div class="mb-bar" style="height: 75%; background: #3b82f6"></div>
+            <div class="mb-bar" style="height: 45%; background: #10b981"></div>
+            <div class="mb-bar" style="height: 18%; background: #6b7280"></div>
+            <div class="mb-bar" style="height: 30%; background: #f59e0b"></div>
+            <div class="mb-bar" style="height: 55%; background: #8b5cf6"></div>
+          </div>
+        </div>
+        <div class="mb-type">
+          <div class="mb-type-h">IBM Plex Sans</div>
+          <div class="mb-type-mono">09:00 → 12:30 · 3h30</div>
+        </div>
+        <div class="mb-swatches">
+          <div
+            class="swatch"
+            style="
+              background: #f7f3ec;
+              border: 1px solid rgba(61, 106, 204, 0.2);
+            "
+            title="#F7F3EC"
+          ></div>
+          <div class="swatch" style="background: #1e2d4a" title="#1E2D4A"></div>
+          <div class="swatch" style="background: #3d6acc" title="#3D6ACC"></div>
+          <div
+            class="swatch"
+            style="
+              background: #3b82f6;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Dev"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #10b981;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Prod"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #f59e0b;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Réunion"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #8b5cf6;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Formation"
+          ></div>
+        </div>
+        <div class="dir-label">
+          <div class="dir-eyebrow">Variante B1 — Actuelle</div>
+          <div class="dir-name">Classique</div>
+          <div class="dir-tagline">
+            Fond crème chaud, header navy, grille bleue. Le papier millimétré
+            tel qu'on le connaît.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===========================
+         B2 — NUIT D'ATELIER
+    =========================== -->
+      <div class="mb mb-2">
+        <div class="mb-header">
+          <div class="mb-logo">Kronik</div>
+          <div class="mb-tabs">
+            <div class="mb-tab on">Journal</div>
+            <div class="mb-tab">Stats</div>
+          </div>
+        </div>
+        <div class="mb-content">
+          <div class="mb-daterow">
+            <span class="mb-datelabel">Journal du jour</span>
+            <span class="mb-dateval">2026-06-29</span>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #3b82f6">
+            <div class="mb-card-title">Développement API REST</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-dev-2">Dev</span>
+              <span class="mb-time">09:00 → 12:30</span>
+              <span class="mb-dur">3h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #10b981">
+            <div class="mb-card-title">Revue plans — fondations</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-prod-2">Prod</span>
+              <span class="mb-time">13:30 → 15:00</span>
+              <span class="mb-dur">1h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #f59e0b">
+            <div class="mb-card-title">Point hebdomadaire</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-reun-2">Réunion</span>
+              <span class="mb-time">15:00 → 16:00</span>
+              <span class="mb-dur">1h00</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-chart-wrap">
+          <div class="mb-chart-label">Répartition — semaine</div>
+          <div class="mb-bars">
+            <div class="mb-bar" style="height: 75%; background: #60a5fa"></div>
+            <div class="mb-bar" style="height: 45%; background: #34d399"></div>
+            <div class="mb-bar" style="height: 18%; background: #9ca3af"></div>
+            <div class="mb-bar" style="height: 30%; background: #fcd34d"></div>
+            <div class="mb-bar" style="height: 55%; background: #a78bfa"></div>
+          </div>
+        </div>
+        <div class="mb-type">
+          <div class="mb-type-h">IBM Plex Sans</div>
+          <div class="mb-type-mono">09:00 → 12:30 · 3h30</div>
+        </div>
+        <div class="mb-swatches">
+          <div
+            class="swatch"
+            style="
+              background: #1c2330;
+              border: 1px solid rgba(255, 255, 255, 0.08);
+            "
+            title="#1C2330"
+          ></div>
+          <div class="swatch" style="background: #141b27" title="#141B27"></div>
+          <div class="swatch" style="background: #d4a20a" title="#D4A20A"></div>
+          <div
+            class="swatch"
+            style="
+              background: #60a5fa;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Dev"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #34d399;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Prod"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #fcd34d;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Réunion"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #a78bfa;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Formation"
+          ></div>
+        </div>
+        <div class="dir-label">
+          <div class="dir-eyebrow">Variante B2</div>
+          <div class="dir-name">Nuit d'atelier</div>
+          <div class="dir-tagline">
+            Même grille, fond ardoise `#1C2330`, grille or ambré. Le papier
+            millimétré sous la lampe de bureau.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===========================
+         B3 — CALQUE FORÊT
+    =========================== -->
+      <div class="mb mb-3">
+        <div class="mb-header">
+          <div class="mb-logo">Kronik</div>
+          <div class="mb-tabs">
+            <div class="mb-tab on">Journal</div>
+            <div class="mb-tab">Stats</div>
+          </div>
+        </div>
+        <div class="mb-content">
+          <div class="mb-daterow">
+            <span class="mb-datelabel">Journal du jour</span>
+            <span class="mb-dateval">2026-06-29</span>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #3b82f6">
+            <div class="mb-card-title">Développement API REST</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-dev-3">Dev</span>
+              <span class="mb-time">09:00 → 12:30</span>
+              <span class="mb-dur">3h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #10b981">
+            <div class="mb-card-title">Revue plans — fondations</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-prod-3">Prod</span>
+              <span class="mb-time">13:30 → 15:00</span>
+              <span class="mb-dur">1h30</span>
+            </div>
+          </div>
+          <div class="mb-card" style="border-left: 3px solid #f59e0b">
+            <div class="mb-card-title">Point hebdomadaire</div>
+            <div class="mb-card-meta">
+              <span class="mb-badge badge-reun-3">Réunion</span>
+              <span class="mb-time">15:00 → 16:00</span>
+              <span class="mb-dur">1h00</span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-chart-wrap">
+          <div class="mb-chart-label">Répartition — semaine</div>
+          <div class="mb-bars">
+            <div class="mb-bar" style="height: 75%; background: #3b82f6"></div>
+            <div class="mb-bar" style="height: 45%; background: #10b981"></div>
+            <div class="mb-bar" style="height: 18%; background: #6b7280"></div>
+            <div class="mb-bar" style="height: 30%; background: #f59e0b"></div>
+            <div class="mb-bar" style="height: 55%; background: #8b5cf6"></div>
+          </div>
+        </div>
+        <div class="mb-type">
+          <div class="mb-type-h">IBM Plex Sans</div>
+          <div class="mb-type-mono">09:00 → 12:30 · 3h30</div>
+        </div>
+        <div class="mb-swatches">
+          <div
+            class="swatch"
+            style="background: #f2f6f1; border: 1px solid rgba(30, 90, 50, 0.2)"
+            title="#F2F6F1"
+          ></div>
+          <div class="swatch" style="background: #1b3a2a" title="#1B3A2A"></div>
+          <div class="swatch" style="background: #2e6b40" title="#2E6B40"></div>
+          <div
+            class="swatch"
+            style="
+              background: #3b82f6;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Dev"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #10b981;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Prod"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #f59e0b;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Réunion"
+          ></div>
+          <div
+            class="swatch"
+            style="
+              background: #8b5cf6;
+              width: 14px;
+              height: 14px;
+              align-self: center;
+            "
+            title="Formation"
+          ></div>
+        </div>
+        <div class="dir-label">
+          <div class="dir-eyebrow">Variante B3</div>
+          <div class="dir-name">Calque Forêt</div>
+          <div class="dir-tagline">
+            Fond blanc teinté vert `#F2F6F1`, grille encre verte, header forêt.
+            Rappelle le cahier à petits carreaux.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
