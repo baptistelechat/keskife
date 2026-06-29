@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-pwa-assets": "pwa-assets-generator"
+    "generate-pwa-assets": "pwa-assets-generator",
+    "seed": "node --env-file=.env.local scripts/seed.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.10",
@@ -25,7 +26,7 @@
     "react": "^19.0.0",
     "react-day-picker": "^10.0.1",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.3",
+    "recharts": "^2.15.4",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
