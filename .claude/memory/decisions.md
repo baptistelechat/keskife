@@ -15,3 +15,5 @@ register: decisions
 | [BDR-007](decisions/BDR-007.md) | 2026-06-29 | Keskife est une PWA avec auto-reload silencieux            | #pwa #vite-plugin-pwa #service-worker #auto-update #manifest | actif  |
 | [BDR-008](decisions/BDR-008.md) | 2026-06-29 | Manifest PWA statique dans `public/` (pattern ifecho)      | #pwa #manifest #vite-plugin-pwa #static-file #dev-mode       | actif  |
 | [BDR-009](decisions/BDR-009.md) | 2026-06-29 | Logo Keskife : variante Spectrum retenue                   | #logo #pwa #icon #design #lucide #spectrum #svg              | actif  |
+| [BDR-010](decisions/BDR-010.md) | 2026-06-29 | Charts migrés vers wrappers shadcn/ui                      | #shadcn #recharts #chart #ui #stats #tailwind-v4             | actif  |
+| [BDR-011](decisions/BDR-011.md) | 2026-06-29 | Script seed interactif : readline, sans mdp en env         | #seed #script #node #readline #supabase #dev-tools           | actif  |

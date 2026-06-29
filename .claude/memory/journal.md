@@ -112,3 +112,28 @@ Remplacement de `public/icon.svg` (ancienne horloge) par le design Spectrum. Set
 **Entrées clés :**
 
 - [BDR-009](decisions/BDR-009.md) — Logo Spectrum retenu comme identité Keskife
+
+---
+
+Session de migration des charts vers shadcn/ui. Installation du composant `chart.tsx` via CLI (déplacé manuellement de `@\components\ui\` → `src\components\ui\`, bug Windows GLRN-121 reproductible). Migration de `KeskifePieChart` et `KeskifeBarChart` : `ResponsiveContainer` remplacé par `ChartContainer`, tooltip/légende Recharts raw remplacés par `ChartTooltip`/`ChartTooltipContent`/`ChartLegend`/`ChartLegendContent`. Couleurs des tags passées via `ChartConfig` (clé = tag, valeur = hex `TAG_COLORS`) — `ChartStyle` les injecte en `--color-{key}` dans le DOM. Les data items Pie reçoivent `fill: "var(--color-{tag})"` au lieu de `Cell`.
+
+Deux corrections post-migration : (1) tooltip trop étroit pour "Développement" + valeur → `gap-2` ajouté sur le conteneur `justify-between` dans `chart.tsx` ; (2) indicateur dot invisible — `bg-[--color-bg]` Tailwind v3 invalide en v4 (génère `background-color: --color-bg` sans `var()`) → corrigé en `bg-(--color-bg)` / `border-(--color-border)`.
+
+**Entrées clés :**
+
+- [BDR-010](decisions/BDR-010.md) — Charts migrés vers wrappers shadcn/ui
+- [LRN-021](learnings/LRN-021.md) — Tailwind v4 : syntaxe `(--var)` obligatoire
+- [ZBLK-006](archive/blockers/ZBLK-006.md) — Dot invisible chart.tsx
+
+---
+
+Session courte de tooling dev : création du script `scripts/seed.mjs` pour peupler la base de données avec des données mock réalistes. Le script purge toutes les entrées de l'utilisateur connecté puis insère ~45 entrées réparties sur 3 semaines (jours ouvrés uniquement, 3 créneaux/jour, 5 tags couverts). Lancé via `pnpm seed` → `node --env-file=.env.local scripts/seed.mjs`.
+
+Premier point de friction : Baptiste a demandé à ne pas stocker le mot de passe en env. Remplacement de `SEED_PASSWORD` par un prompt readline interactif avec `output: null` pour masquer l'écho — aucune dépendance supplémentaire, compatible Windows.
+
+Second point : les tags `admin` et `formation` n'apparaissaient jamais dans les données générées. Cause : parity slot selection — `slots[3]` était sélectionné uniquement quand `dayIndex % 2 === 0`, mais son `tagIdx` valait `dayIndex % 2 === 0 ? 0 : 2`, donc toujours 0 (dev) au moment où il était pris. Fix : formule `TAGS[(dayIndex + i * 2) % TAGS.length]` avec step=2 coprime avec N=5, garantissant tous les tags en 5 jours.
+
+**Entrées clés :**
+
+- [BDR-011](decisions/BDR-011.md) — Script seed readline interactif
+- [LRN-022](learnings/LRN-022.md) — Cycling tag coprime pour couverture uniforme
