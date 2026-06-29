@@ -1,15 +1,18 @@
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
 import { TAG_COLORS, TAG_LABELS, TAGS } from "../../types";
 import type { Entry, Tag } from "../../types";
+
+const chartConfig = Object.fromEntries(
+  TAGS.map((tag) => [tag, { label: TAG_LABELS[tag], color: TAG_COLORS[tag] }]),
+) satisfies ChartConfig;
 
 interface Props {
   entries: Entry[];
@@ -43,13 +46,18 @@ function groupEntries(entries: Entry[], groupBy: "day" | "week") {
 
   return Array.from(map.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([date, tags]) => ({ date, ...tags }));
+    .map(([date, tags]) => ({
+      date,
+      ...Object.fromEntries(
+        TAGS.map((t) => [t, Math.round(tags[t] * 10) / 10]),
+      ),
+    }));
 }
 
 export function KeskifeBarChart({ entries, groupBy }: Props) {
   if (entries.length === 0) {
     return (
-      <p className="py-10 text-center text-sm text-gray-400">
+      <p className="py-10 text-center text-sm text-muted-foreground">
         Aucune donnée sur cette période
       </p>
     );
@@ -58,7 +66,7 @@ export function KeskifeBarChart({ entries, groupBy }: Props) {
   const data = groupEntries(entries, groupBy);
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ChartContainer config={chartConfig} className="min-h-[280px] w-full">
       <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 4 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis
@@ -67,18 +75,17 @@ export function KeskifeBarChart({ entries, groupBy }: Props) {
           tickFormatter={(v: string) => v.slice(5)}
         />
         <YAxis tick={{ fontSize: 11 }} unit="h" />
-        <Tooltip formatter={(v: number) => `${Math.round(v * 10) / 10}h`} />
-        <Legend />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
         {TAGS.map((tag) => (
           <Bar
             key={tag}
             dataKey={tag}
-            name={TAG_LABELS[tag]}
             stackId="a"
-            fill={TAG_COLORS[tag]}
+            fill={`var(--color-${tag})`}
           />
         ))}
       </BarChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }

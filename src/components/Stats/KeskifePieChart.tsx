@@ -1,13 +1,18 @@
+import { PieChart, Pie } from "recharts";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { TAG_COLORS, TAG_LABELS } from "../../types";
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
+import { TAG_COLORS, TAG_LABELS, TAGS } from "../../types";
 import type { Tag } from "../../types";
+
+const chartConfig = Object.fromEntries(
+  TAGS.map((tag) => [tag, { label: TAG_LABELS[tag], color: TAG_COLORS[tag] }]),
+) satisfies ChartConfig;
 
 interface Props {
   data: { tag: Tag; minutes: number }[];
@@ -16,20 +21,21 @@ interface Props {
 export function KeskifePieChart({ data }: Props) {
   if (data.length === 0) {
     return (
-      <p className="py-10 text-center text-sm text-gray-400">
+      <p className="py-10 text-center text-sm text-muted-foreground">
         Aucune donnée sur cette période
       </p>
     );
   }
 
   const chartData = data.map((d) => ({
-    name: TAG_LABELS[d.tag],
-    value: d.minutes,
     tag: d.tag,
+    name: TAG_LABELS[d.tag],
+    value: Math.round((d.minutes / 60) * 10) / 10,
+    fill: `var(--color-${d.tag})`,
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ChartContainer config={chartConfig} className="min-h-[280px]">
       <PieChart>
         <Pie
           data={chartData}
@@ -38,16 +44,12 @@ export function KeskifePieChart({ data }: Props) {
           cx="50%"
           cy="50%"
           outerRadius={110}
-        >
-          {chartData.map((entry) => (
-            <Cell key={entry.tag} fill={TAG_COLORS[entry.tag]} />
-          ))}
-        </Pie>
-        <Tooltip
-          formatter={(v: number) => `${Math.round((v / 60) * 10) / 10}h`}
         />
-        <Legend />
+        <ChartTooltip
+          content={<ChartTooltipContent nameKey="tag" hideLabel />}
+        />
+        <ChartLegend content={<ChartLegendContent nameKey="tag" />} />
       </PieChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }
