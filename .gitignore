@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment — secrets
+.env
+.env.local
+.env.*.local
+
+# TypeScript incremental build
+*.tsbuildinfo
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Custom
+**/.obsidian/
+.claude/memory/dashboard.md
