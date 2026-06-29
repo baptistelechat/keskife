@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kronik · Propositions d'icône PWA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #07070e;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        padding: 3rem 2rem 6rem;
+        color: #e0e0ee;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3.5rem;
+      }
+      .eyebrow {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #3d6acc;
+        margin-bottom: 0.625rem;
+      }
+      h1 {
+        font-size: 1.875rem;
+        font-weight: 600;
+        color: #e8e8f0;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.5rem;
+      }
+      .sub {
+        color: #5a5a78;
+        font-size: 0.875rem;
+      }
+
+      .sec {
+        max-width: 1160px;
+        margin: 0 auto 1.25rem;
+        font-size: 0.625rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #2a2a42;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        max-width: 1160px;
+        margin: 0 auto;
+      }
+      @media (max-width: 920px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: #0c0c1a;
+        border: 1px solid #181828;
+        border-radius: 18px;
+        padding: 2rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .icon-main {
+        flex-shrink: 0;
+      }
+      .icon-sizes {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.625rem;
+      }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background: #181828;
+      }
+
+      .meta {
+        width: 100%;
+      }
+      .vname {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #e0e0ee;
+        font-family: "IBM Plex Mono", monospace;
+        margin-bottom: 0.25rem;
+      }
+      .vdesc {
+        font-size: 0.75rem;
+        color: #44445c;
+        line-height: 1.5;
+      }
+      .palette {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.625rem;
+        flex-wrap: wrap;
+      }
+      .sw {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.625rem;
+        font-family: "IBM Plex Mono", monospace;
+        color: #44445c;
+      }
+      .sw-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        flex-shrink: 0;
+      }
+
+      /* Note */
+      .note {
+        max-width: 1160px;
+        margin: 3rem auto 0;
+        background: #0c0c1a;
+        border: 1px solid #181828;
+        border-radius: 16px;
+        padding: 1.75rem;
+      }
+      .note h2 {
+        font-size: 0.625rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #3d6acc;
+        margin-bottom: 1.25rem;
+      }
+      pre {
+        background: #07070e;
+        border: 1px solid #181828;
+        border-radius: 10px;
+        padding: 1.25rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8125rem;
+        line-height: 1.75;
+        color: #5a6a90;
+        overflow-x: auto;
+      }
+      .k {
+        color: #6faaee;
+      }
+      .s {
+        color: #7ec983;
+      }
+      .c {
+        color: #2a2a42;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <div class="eyebrow">Kronik · PWA Icon</div>
+      <h1>Propositions d'icône</h1>
+      <p class="sub">6 variantes · icônes Lucide · palette Papier Millimétré</p>
+    </div>
+
+    <p class="sec">Variantes</p>
+    <div class="grid" id="grid"></div>
+
+    <div class="note">
+      <h2>Génération des assets PWA</h2>
+      <pre><span class="c"># 1. Installer la lib (companion officiel de vite-plugin-pwa)</span>
+pnpm add -D @vite-pwa/assets-generator
+
+<span class="c"># 2. Créer pwa-assets.config.ts à la racine</span>
+<span class="k">import</span> { defineConfig, minimalPreset } <span class="k">from</span> <span class="s">'@vite-pwa/assets-generator/config'</span>
+
+<span class="k">export default</span> defineConfig({
+  preset: minimalPreset,       <span class="c">// génère 64/192/512 + apple-touch + maskable</span>
+  images: [<span class="s">'public/logo.svg'</span>], <span class="c">// source SVG 512×512 sans padding</span>
+})
+
+<span class="c"># 3. Ajouter dans package.json → scripts</span>
+<span class="s">"generate-pwa-assets"</span>: <span class="s">"pwa-assets-generator"</span>
+
+<span class="c"># 4. Exporter la variante choisie en SVG dans public/logo.svg puis lancer</span>
+pnpm generate-pwa-assets
+<span class="c"># → public/pwa-64x64.png, pwa-192x192.png, pwa-512x512.png
+#    apple-touch-icon-180x180.png, maskable-icon-512x512.png</span></pre>
+    </div>
+
+    <script>
+      // ─── Icon data (Lucide, viewBox 0 0 24 24) ───────────────────────────────
+
+      const ICONS = {
+        calendarDays: {
+          paths: `<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>`,
+          dots(c) {
+            return [
+              [8, 14],
+              [12, 14],
+              [16, 14],
+              [8, 18],
+              [12, 18],
+              [16, 18],
+            ]
+              .map(
+                ([cx, cy]) =>
+                  `<circle cx="${cx}" cy="${cy}" r="0.65" fill="${c}" stroke="none"/>`,
+              )
+              .join("");
+          },
+        },
+        calendarClock: {
+          paths: `<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.25V14"/><circle cx="16" cy="16" r="6"/>`,
+          dots() {
+            return "";
+          },
+        },
+        clock: {
+          paths: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+          dots() {
+            return "";
+          },
+        },
+      };
+
+      // ─── SVG builder ──────────────────────────────────────────────────────────
+      // Frame: 512×512 viewBox, icon in 300×300 area centered (scale=12.5)
+      // rx=108 ≈ 21% → iOS-style rounded square
+
+      function makeSVG({
+        uid,
+        size,
+        bg,
+        gradient,
+        iconKey,
+        iconColor,
+        customDots,
+      }) {
+        const gid = `g_${uid}_${size}`;
+        const gradDef = gradient
+          ? `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="${gradient[0]}"/>
+              <stop offset="100%" stop-color="${gradient[1]}"/>
+             </linearGradient></defs>`
+          : "";
+        const fill = gradient ? `url(#${gid})` : bg;
+        const icon = ICONS[iconKey];
+        const dotSVG = customDots
+          ? [
+              [8, 14],
+              [12, 14],
+              [16, 14],
+              [8, 18],
+              [12, 18],
+              [16, 18],
+            ]
+              .map(
+                ([cx, cy], i) =>
+                  `<circle cx="${cx}" cy="${cy}" r="0.65" fill="${customDots[i % customDots.length]}" stroke="none"/>`,
+              )
+              .join("")
+          : icon.dots(iconColor);
+
+        return `<svg viewBox="0 0 512 512" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+          ${gradDef}
+          <rect width="512" height="512" rx="108" fill="${fill}"/>
+          <g transform="translate(106,106) scale(12.5)" stroke="${iconColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            ${icon.paths}
+            ${dotSVG}
+          </g>
+        </svg>`;
+      }
+
+      function makeLetterSVG(
+        size,
+        { bg = "#1e2d4a", color = "#ffffff", letter = "K" } = {},
+      ) {
+        return `<svg viewBox="0 0 512 512" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+          <rect width="512" height="512" rx="108" fill="${bg}"/>
+          <text x="256" y="256" font-family="'IBM Plex Mono',monospace" font-size="340"
+            font-weight="500" fill="${color}" text-anchor="middle" dominant-baseline="central">${letter}</text>
+        </svg>`;
+      }
+
+      // ─── Tag dot colors ───────────────────────────────────────────────────────
+      const TAG_DOTS = [
+        "#3B82F6",
+        "#F59E0B",
+        "#10B981",
+        "#8B5CF6",
+        "#6B7280",
+        "#3B82F6",
+      ];
+
+      // ─── Variants ─────────────────────────────────────────────────────────────
+      const VARIANTS = [
+        {
+          id: "A",
+          name: "A — Classique",
+          desc: "Fond navy · CalendarDays blanc · thème jour",
+          bg: "#1e2d4a",
+          iconColor: "#ffffff",
+          iconKey: "calendarDays",
+          swatches: [
+            ["#1e2d4a", "fond"],
+            ["#ffffff", "icône"],
+          ],
+        },
+        {
+          id: "B",
+          name: "B — Gradient",
+          desc: "Dégradé navy → bleu accent · CalendarDays blanc",
+          gradient: ["#1e2d4a", "#3d6acc"],
+          iconColor: "#ffffff",
+          iconKey: "calendarDays",
+          swatches: [
+            ["#1e2d4a", "from"],
+            ["#3d6acc", "to"],
+            ["#ffffff", "icône"],
+          ],
+        },
+        {
+          id: "C",
+          name: "C — Nuit d'Atelier",
+          desc: "Fond nuit · CalendarDays doré · thème sombre",
+          bg: "#1c2330",
+          iconColor: "#d4a20a",
+          iconKey: "calendarDays",
+          swatches: [
+            ["#1c2330", "fond"],
+            ["#d4a20a", "icône"],
+          ],
+        },
+        {
+          id: "D",
+          name: "D — Chrono",
+          desc: "CalendarClock · horloge intégrée · navy",
+          bg: "#1e2d4a",
+          iconColor: "#ffffff",
+          iconKey: "calendarClock",
+          swatches: [
+            ["#1e2d4a", "fond"],
+            ["#ffffff", "icône"],
+          ],
+        },
+        {
+          id: "E",
+          name: "E — Spectrum",
+          desc: "CalendarDays · points multicolores · palette de tags",
+          bg: "#1e2d4a",
+          iconColor: "#ffffff",
+          iconKey: "calendarDays",
+          customDots: TAG_DOTS,
+          swatches: [
+            ["#3B82F6", "dev"],
+            ["#F59E0B", "réunion"],
+            ["#10B981", "prod"],
+            ["#8B5CF6", "formation"],
+            ["#6B7280", "admin"],
+          ],
+        },
+        {
+          id: "F",
+          name: "F — Lettermark",
+          desc: 'Monogramme "K" · IBM Plex Mono · sobre',
+          bg: "#1e2d4a",
+          letter: true,
+          swatches: [
+            ["#1e2d4a", "fond"],
+            ["#ffffff", "texte"],
+          ],
+        },
+      ];
+
+      // ─── Render ───────────────────────────────────────────────────────────────
+      const MAIN_SIZE = 200;
+      const SMALL_SIZES = [72, 48, 24];
+      const grid = document.getElementById("grid");
+
+      VARIANTS.forEach((v) => {
+        const mainSVG = v.letter
+          ? makeLetterSVG(MAIN_SIZE)
+          : makeSVG({
+              uid: v.id + "m",
+              size: MAIN_SIZE,
+              bg: v.bg,
+              gradient: v.gradient,
+              iconKey: v.iconKey,
+              iconColor: v.iconColor,
+              customDots: v.customDots,
+            });
+
+        const smallSVGs = SMALL_SIZES.map((sz) =>
+          v.letter
+            ? makeLetterSVG(sz)
+            : makeSVG({
+                uid: v.id + sz,
+                size: sz,
+                bg: v.bg,
+                gradient: v.gradient,
+                iconKey: v.iconKey,
+                iconColor: v.iconColor,
+                customDots: v.customDots,
+              }),
+        ).join("");
+
+        const swatchHTML = v.swatches
+          .map(
+            ([color, label]) =>
+              `<span class="sw"><span class="sw-dot" style="background:${color}"></span>${color}</span>`,
+          )
+          .join("");
+
+        grid.innerHTML += `
+          <div class="card">
+            <div class="icon-main">${mainSVG}</div>
+            <div class="icon-sizes">${smallSVGs}</div>
+            <div class="divider"></div>
+            <div class="meta">
+              <div class="vname">${v.name}</div>
+              <div class="vdesc">${v.desc}</div>
+              <div class="palette">${swatchHTML}</div>
+            </div>
+          </div>
+        `;
+      });
+    </script>
+  </body>
+</html>
