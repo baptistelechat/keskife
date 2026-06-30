@@ -66,9 +66,17 @@ export default function App() {
     <div className="graph-bg min-h-screen bg-background">
       <header className="bg-primary border-b border-primary-foreground/10 px-4 py-3">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <h1 className="text-lg font-bold tracking-tight text-primary-foreground">
-            Keskife
-          </h1>
+          <div className="flex items-center gap-2">
+            <img
+              src="/icon-nobg.svg"
+              alt=""
+              aria-hidden="true"
+              className="size-8"
+            />
+            <h1 className="hidden text-lg font-bold tracking-tight text-primary-foreground sm:block">
+              Keskife
+            </h1>
+          </div>
           <div className="flex items-center gap-4">
             {!isStandalone && installPrompt && (
               <Button
