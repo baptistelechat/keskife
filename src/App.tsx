@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Download, LogOut } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
 import { AuthForm } from "./components/Auth/AuthForm";
 import { useAuth } from "./hooks/useAuth";
@@ -57,7 +58,14 @@ export default function App() {
   if (!user) {
     return (
       <div className="graph-bg flex min-h-screen items-center justify-center bg-background p-4">
-        <AuthForm />
+        <m.div
+          className="w-full max-w-sm"
+          initial={{ opacity: 0, scale: 0.97, y: 8 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+        >
+          <AuthForm />
+        </m.div>
       </div>
     );
   }
@@ -128,7 +136,17 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-2xl px-4 py-6">
-        {tab === "journal" ? <Dashboard /> : <Stats />}
+        <AnimatePresence mode="wait">
+          <m.div
+            key={tab}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+          >
+            {tab === "journal" ? <Dashboard /> : <Stats />}
+          </m.div>
+        </AnimatePresence>
       </main>
     </div>
   );
