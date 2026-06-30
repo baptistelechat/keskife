@@ -35,3 +35,8 @@ register: learnings
 | [LRN-027](learnings/LRN-027.md) | 2026-06-30 | `children` à destructurer de DayButton pour ajouter du JSX       | #react-day-picker #calendar #DayButton #children #props #shadcn #customization                    |
 | [LRN-028](learnings/LRN-028.md) | 2026-06-30 | `getDay()` pour weekends (modifier `weekend` absent rdp v10)     | #react-day-picker #calendar #weekend #modifier #DayButton #getDay #v10                            |
 | [LRN-029](learnings/LRN-029.md) | 2026-06-30 | Pattern `daysWithData` : modifier custom + dot + hook par mois   | #react-day-picker #calendar #shadcn #custom-modifier #daysWithData #useMonthActivity #performance |
+| [LRN-030](learnings/LRN-030.md) | 2026-06-30 | `ascending: false` en DB, pas `.reverse()` côté composant        | #supabase #react #order #query #ux #list                                                          |
+| [LRN-031](learnings/LRN-031.md) | 2026-06-30 | Flèches prev/next date : functional updater `setState`           | #react #date #navigation #state #functional-updater                                               |
+| [LRN-032](learnings/LRN-032.md) | 2026-06-30 | SVG icône blanc sur fond clair → créer variante `-dark`          | #svg #icon #stroke #dark-variant #auth #ui #assets                                                |
+| [LRN-033](learnings/LRN-033.md) | 2026-06-30 | `m.div` flex sans `w-full` → enfants perdent leur largeur        | #motion #m.div #flex #w-full #wrapper #animation #layout                                          |
+| [LRN-034](learnings/LRN-034.md) | 2026-06-30 | Dialog contrôlé extern : `onOpenChange(true)` jamais appelé      | #radix-ui #dialog #shadcn #controlled-open #useEffect #local-state #react                         |

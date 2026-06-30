@@ -17,3 +17,4 @@ register: decisions
 | [BDR-009](decisions/BDR-009.md) | 2026-06-29 | Logo Keskife : variante Spectrum retenue                   | #logo #pwa #icon #design #lucide #spectrum #svg              | actif  |
 | [BDR-010](decisions/BDR-010.md) | 2026-06-29 | Charts migrés vers wrappers shadcn/ui                      | #shadcn #recharts #chart #ui #stats #tailwind-v4             | actif  |
 | [BDR-011](decisions/BDR-011.md) | 2026-06-29 | Script seed interactif : readline, sans mdp en env         | #seed #script #node #readline #supabase #dev-tools           | actif  |
+| [BDR-012](decisions/BDR-012.md) | 2026-06-30 | `motion/react` retenu pour les animations Keskife          | #motion #animation #animatepresence #react #lazy-motion      | actif  |
