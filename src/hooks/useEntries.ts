@@ -18,7 +18,7 @@ export function useEntries(date: string) {
       .select("*")
       .gte("started_at", `${date}T00:00:00`)
       .lte("started_at", `${date}T23:59:59`)
-      .order("started_at", { ascending: true });
+      .order("started_at", { ascending: false });
     setEntries((data as Entry[]) ?? []);
     setLoading(false);
   }, [date]);
