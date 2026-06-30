@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Clock2Icon } from "lucide-react";
 import { TAGS, TAG_LABELS, TAG_COLORS } from "../../types";
 import type { Tag } from "../../types";
+import { useMonthActivity } from "../../hooks/useMonthActivity";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,9 +49,11 @@ const END_MONTH = new Date(today.getFullYear() + 5, 11);
 
 export function EntryForm({ addEntry }: Props) {
   const [date, setDate] = useState<Date>(new Date());
-  const [currentMonth, setCurrentMonth] = useState<Date>(
-    new Date(today.getFullYear(), today.getMonth(), 1),
-  );
+  const {
+    month: currentMonth,
+    setMonth: setCurrentMonth,
+    activeDays,
+  } = useMonthActivity(new Date(today.getFullYear(), today.getMonth(), 1));
   const [startTime, setStartTime] = useState(nowTime());
   const [endTime, setEndTime] = useState(oneHourLater());
   const [title, setTitle] = useState("");
@@ -99,6 +102,7 @@ export function EntryForm({ addEntry }: Props) {
               timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
               showWeekNumber
               fixedWeeks
+              daysWithData={activeDays}
             />
           </div>
           <div className="border-t p-2">

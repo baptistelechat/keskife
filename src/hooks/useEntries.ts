@@ -64,6 +64,32 @@ function toLocalDateStr(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
+export async function fetchActiveDaysInMonth(
+  year: number,
+  month: number,
+): Promise<Date[]> {
+  const from = new Date(year, month, 1);
+  const to = new Date(year, month + 1, 0);
+  const { data } = await supabase
+    .from("entries")
+    .select("started_at")
+    .gte("started_at", `${toLocalDateStr(from)}T00:00:00`)
+    .lte("started_at", `${toLocalDateStr(to)}T23:59:59`);
+  if (!data?.length) return [];
+  const seen = new Set<string>();
+  return data
+    .map((r) => (r.started_at as string).split("T")[0])
+    .filter((d) => {
+      if (seen.has(d)) return false;
+      seen.add(d);
+      return true;
+    })
+    .map((d) => {
+      const [y, m, day] = d.split("-").map(Number);
+      return new Date(y, m - 1, day);
+    });
+}
+
 export async function fetchEntriesInRange(
   from: Date,
   to: Date,

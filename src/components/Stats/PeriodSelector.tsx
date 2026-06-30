@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import type { Period, DateRange } from "../../types";
+import { useMonthActivity } from "../../hooks/useMonthActivity";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -47,6 +48,16 @@ export function PeriodSelector({
 }: Props) {
   const [openFrom, setOpenFrom] = useState(false);
   const [openTo, setOpenTo] = useState(false);
+  const {
+    month: monthFrom,
+    setMonth: setMonthFrom,
+    activeDays: activeDaysFrom,
+  } = useMonthActivity(customRange.from);
+  const {
+    month: monthTo,
+    setMonth: setMonthTo,
+    activeDays: activeDaysTo,
+  } = useMonthActivity(customRange.to);
 
   return (
     <div className="flex flex-col gap-3">
@@ -85,14 +96,18 @@ export function PeriodSelector({
                 onSelect={(d) => {
                   if (d) {
                     onCustomRange({ ...customRange, from: d });
+                    setMonthFrom(d);
                     setOpenFrom(false);
                   }
                 }}
+                month={monthFrom}
+                onMonthChange={setMonthFrom}
                 startMonth={START_MONTH}
                 endMonth={END_MONTH}
                 timeZone={TZ}
                 showWeekNumber
                 fixedWeeks
+                daysWithData={activeDaysFrom}
               />
               <div className="border-t p-2">
                 <Button
@@ -125,14 +140,18 @@ export function PeriodSelector({
                 onSelect={(d) => {
                   if (d) {
                     onCustomRange({ ...customRange, to: d });
+                    setMonthTo(d);
                     setOpenTo(false);
                   }
                 }}
+                month={monthTo}
+                onMonthChange={setMonthTo}
                 startMonth={START_MONTH}
                 endMonth={END_MONTH}
                 timeZone={TZ}
                 showWeekNumber
                 fixedWeeks
+                daysWithData={activeDaysTo}
               />
               <div className="border-t p-2">
                 <Button

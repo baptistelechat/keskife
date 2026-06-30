@@ -3,6 +3,7 @@ import { CalendarIcon } from "lucide-react";
 import { EntryForm } from "../components/Entry/EntryForm";
 import { EntryList } from "../components/Entry/EntryList";
 import { useEntries } from "../hooks/useEntries";
+import { useMonthActivity } from "../hooks/useMonthActivity";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -22,6 +23,7 @@ const END_MONTH = new Date(today.getFullYear() + 5, 11);
 export function Dashboard() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [open, setOpen] = useState(false);
+  const { month, setMonth, activeDays } = useMonthActivity();
   const iso = toISO(selectedDate);
   const { entries, loading, deleteEntry, addEntry } = useEntries(iso);
 
@@ -53,11 +55,14 @@ export function Dashboard() {
                     setOpen(false);
                   }
                 }}
+                month={month}
+                onMonthChange={setMonth}
                 startMonth={START_MONTH}
                 endMonth={END_MONTH}
                 timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
                 showWeekNumber
                 fixedWeeks
+                daysWithData={activeDays}
               />
               <div className="border-t p-2">
                 <Button

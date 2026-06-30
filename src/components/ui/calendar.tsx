@@ -5,6 +5,7 @@ import {
   type DayButton,
   type Locale,
 } from "react-day-picker";
+import { fr } from "react-day-picker/locale";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
@@ -22,11 +23,18 @@ function Calendar({
   locale,
   formatters,
   components,
+  daysWithData,
+  modifiers: propModifiers,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  daysWithData?: Date[];
 }) {
   const defaultClassNames = getDefaultClassNames();
+  const effectiveLocale = locale ?? fr;
+  const mergedModifiers = daysWithData?.length
+    ? { hasData: daysWithData, ...(propModifiers ?? {}) }
+    : propModifiers;
 
   return (
     <DayPicker
@@ -38,10 +46,11 @@ function Calendar({
         className,
       )}
       captionLayout={captionLayout}
-      locale={locale}
+      locale={effectiveLocale}
+      modifiers={mergedModifiers}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString(locale?.code, { month: "short" }),
+          date.toLocaleString(effectiveLocale.code, { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -157,7 +166,7 @@ function Calendar({
           );
         },
         DayButton: ({ ...props }) => (
-          <CalendarDayButton locale={locale} {...props} />
+          <CalendarDayButton locale={effectiveLocale} {...props} />
         ),
         WeekNumber: ({ children, ...props }) => (
           <td {...props}>
@@ -178,6 +187,7 @@ function CalendarDayButton({
   day,
   modifiers,
   locale,
+  children,
   ...props
 }: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const defaultClassNames = getDefaultClassNames();
@@ -186,6 +196,9 @@ function CalendarDayButton({
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus();
   }, [modifiers.focused]);
+
+  const isWeekend = [0, 6].includes(day.date.getDay());
+  const hasData = !!(modifiers as Record<string, boolean>).hasData;
 
   return (
     <Button
@@ -210,11 +223,17 @@ function CalendarDayButton({
         "data-[range-start=true]:rounded-l-(--cell-radius) data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground",
         "data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground",
         "[&>span]:text-xs [&>span]:opacity-70",
+        isWeekend && !modifiers.selected && "text-rose-600/70",
         defaultClassNames.day,
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+      {hasData && !modifiers.selected && (
+        <span className="absolute bottom-0.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-primary/70" />
+      )}
+    </Button>
   );
 }
 
