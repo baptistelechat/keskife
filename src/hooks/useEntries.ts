@@ -54,7 +54,37 @@ export function useEntries(date: string) {
     return error;
   };
 
-  return { entries, loading, addEntry, deleteEntry, refetch: fetch };
+  const updateEntry = async (
+    id: string,
+    patch: {
+      title: string;
+      tag: Tag;
+      startTime: string;
+      endTime: string;
+      date: string;
+    },
+  ) => {
+    const { error } = await supabase
+      .from("entries")
+      .update({
+        title: patch.title,
+        tag: patch.tag,
+        started_at: toLocalISO(patch.date, patch.startTime),
+        ended_at: toLocalISO(patch.date, patch.endTime),
+      })
+      .eq("id", id);
+    if (!error) await fetch();
+    return error;
+  };
+
+  return {
+    entries,
+    loading,
+    addEntry,
+    deleteEntry,
+    updateEntry,
+    refetch: fetch,
+  };
 }
 
 function toLocalDateStr(d: Date): string {

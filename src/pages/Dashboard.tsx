@@ -2,7 +2,9 @@ import { useState } from "react";
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { EntryForm } from "../components/Entry/EntryForm";
 import { EntryList } from "../components/Entry/EntryList";
+import { EntryEditDialog } from "../components/Entry/EntryEditDialog";
 import { useEntries } from "../hooks/useEntries";
+import type { Entry } from "../types";
 import { useMonthActivity } from "../hooks/useMonthActivity";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -23,9 +25,11 @@ const END_MONTH = new Date(today.getFullYear() + 5, 11);
 export function Dashboard() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [open, setOpen] = useState(false);
+  const [editEntry, setEditEntry] = useState<Entry | null>(null);
   const { month, setMonth, activeDays } = useMonthActivity();
   const iso = toISO(selectedDate);
-  const { entries, loading, deleteEntry, addEntry } = useEntries(iso);
+  const { entries, loading, deleteEntry, addEntry, updateEntry } =
+    useEntries(iso);
 
   return (
     <div className="flex flex-col gap-6">
@@ -111,8 +115,22 @@ export function Dashboard() {
             </Button>
           </div>
         </div>
-        <EntryList entries={entries} loading={loading} onDelete={deleteEntry} />
+        <EntryList
+          entries={entries}
+          loading={loading}
+          onDelete={deleteEntry}
+          onEdit={setEditEntry}
+        />
       </div>
+
+      <EntryEditDialog
+        entry={editEntry}
+        open={editEntry !== null}
+        onOpenChange={(o) => {
+          if (!o) setEditEntry(null);
+        }}
+        onSave={updateEntry}
+      />
     </div>
   );
 }
