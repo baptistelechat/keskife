@@ -72,7 +72,7 @@ export default function App() {
 
   return (
     <div className="graph-bg min-h-screen bg-background">
-      <header className="bg-primary border-b border-primary-foreground/10 px-4 py-3">
+      <header className="bg-primary sticky top-0 z-50 border-b border-primary-foreground/10 px-4 py-3">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <div className="flex items-center gap-2">
             <img

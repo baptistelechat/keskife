@@ -1,12 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { LazyMotion, domAnimation } from "motion/react";
+import { LazyMotion, domMax } from "motion/react";
 import "./index.css";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <LazyMotion features={domAnimation}>
+    <LazyMotion features={domMax}>
       <App />
     </LazyMotion>
   </StrictMode>,

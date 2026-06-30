@@ -12,7 +12,6 @@ export function useEntries(date: string) {
   const [loading, setLoading] = useState(true);
 
   const fetch = useCallback(async () => {
-    setLoading(true);
     const { data } = await supabase
       .from("entries")
       .select("*")
