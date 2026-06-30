@@ -44,9 +44,17 @@ export function AuthForm() {
   }
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
+    <Card className="w-full">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Keskife</CardTitle>
+        <div className="mb-1 flex items-center justify-center gap-2">
+          <img
+            src="/icon-dark.svg"
+            alt=""
+            aria-hidden="true"
+            className="size-6"
+          />
+          <CardTitle className="text-2xl">Keskife</CardTitle>
+        </div>
         <CardDescription>
           {mode === "login" ? "Connecte-toi à ton compte" : "Crée ton compte"}
         </CardDescription>

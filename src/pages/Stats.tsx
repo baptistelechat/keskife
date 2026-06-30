@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, m } from "motion/react";
 import { PeriodSelector } from "../components/Stats/PeriodSelector";
 import { ChartToggle } from "../components/Stats/ChartToggle";
 import { KeskifePieChart } from "../components/Stats/KeskifePieChart";
@@ -88,15 +89,25 @@ export function Stats() {
 
       <Card>
         <CardContent className="pt-6">
-          {loading ? (
-            <p className="py-10 text-center text-sm text-muted-foreground">
-              Chargement...
-            </p>
-          ) : chartType === "pie" ? (
-            <KeskifePieChart data={groupByTag(entries)} />
-          ) : (
-            <KeskifeBarChart entries={entries} groupBy={groupBy} />
-          )}
+          <AnimatePresence mode="wait">
+            <m.div
+              key={loading ? "loading" : chartType}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              {loading ? (
+                <p className="py-10 text-center text-sm text-muted-foreground">
+                  Chargement...
+                </p>
+              ) : chartType === "pie" ? (
+                <KeskifePieChart data={groupByTag(entries)} />
+              ) : (
+                <KeskifeBarChart entries={entries} groupBy={groupBy} />
+              )}
+            </m.div>
+          </AnimatePresence>
         </CardContent>
       </Card>
 

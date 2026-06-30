@@ -12,13 +12,12 @@ export function useEntries(date: string) {
   const [loading, setLoading] = useState(true);
 
   const fetch = useCallback(async () => {
-    setLoading(true);
     const { data } = await supabase
       .from("entries")
       .select("*")
       .gte("started_at", `${date}T00:00:00`)
       .lte("started_at", `${date}T23:59:59`)
-      .order("started_at", { ascending: true });
+      .order("started_at", { ascending: false });
     setEntries((data as Entry[]) ?? []);
     setLoading(false);
   }, [date]);
@@ -54,7 +53,37 @@ export function useEntries(date: string) {
     return error;
   };
 
-  return { entries, loading, addEntry, deleteEntry, refetch: fetch };
+  const updateEntry = async (
+    id: string,
+    patch: {
+      title: string;
+      tag: Tag;
+      startTime: string;
+      endTime: string;
+      date: string;
+    },
+  ) => {
+    const { error } = await supabase
+      .from("entries")
+      .update({
+        title: patch.title,
+        tag: patch.tag,
+        started_at: toLocalISO(patch.date, patch.startTime),
+        ended_at: toLocalISO(patch.date, patch.endTime),
+      })
+      .eq("id", id);
+    if (!error) await fetch();
+    return error;
+  };
+
+  return {
+    entries,
+    loading,
+    addEntry,
+    deleteEntry,
+    updateEntry,
+    refetch: fetch,
+  };
 }
 
 function toLocalDateStr(d: Date): string {

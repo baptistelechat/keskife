@@ -171,3 +171,37 @@ Pour le dot, `children` a dû être destructuré explicitement hors de `{...prop
 - [LRN-027](learnings/LRN-027.md) — children à destructurer de DayButton pour ajouter du JSX
 - [LRN-028](learnings/LRN-028.md) — getDay() pour weekends (modifier weekend absent rdp v10)
 - [LRN-029](learnings/LRN-029.md) — Pattern daysWithData : modifier custom + dot + hook par mois
+
+---
+
+Session animations + polish UI. Audit Emil Design Engineering complet de l'app, puis implémentation de `motion/react` (v12) pour les transitions entrée/sortie. Raisonnement : CSS pur couvre les entrées (`@starting-style`) mais pas les sorties — `AnimatePresence` est structurellement nécessaire pour les exit animations propres.
+
+Installation de `motion`, `LazyMotion features={domAnimation}` posé dans `main.tsx` (wrapper root unique, pattern GLRN-095). Quatre zones animées : (1) tab switch Journal↔Stats avec `AnimatePresence mode="wait"` + fade+y ; (2) entry cards avec `AnimatePresence` + `layout` pour repositionner les items restants à la suppression ; (3) chart swap Pie↔Bar avec key dynamique `loading|chartType` ; (4) auth card avec scale-in au mount. CSS pur conservé pour `button:active { scale(0.97) }` et `[role="alert"]` slide-in depuis le haut.
+
+Bug immédiat post-animation : la card `AuthForm` rétrécissait — `m.div` wrapper sans `w-full` dans un conteneur flex crée une référence circulaire avec le `w-full` interne. Fix : `className="w-full max-w-sm"` sur le wrapper, `w-full` seul sur la card.
+
+Ajout du logo Keskife dans la page de connexion (`AuthForm`) à côté du titre. Première tentative avec `icon-nobg.svg` → invisible (stroke blanc sur fond card crème). Création de `public/icon-dark.svg` (même SVG, `stroke="#1e2d4a"`) pour les fonds clairs.
+
+Découverte de LRN-030 et LRN-031 orphelins (fichiers créés, absents de l'index) — rattrapés et indexés lors du rituel.
+
+**Entrées clés :**
+
+- [BDR-012](decisions/BDR-012.md) — `motion/react` retenu pour animations Keskife
+- [LRN-033](learnings/LRN-033.md) — `m.div` flex sans `w-full` → largeur perdue
+- [LRN-032](learnings/LRN-032.md) — SVG blanc sur fond clair → variante `-dark`
+
+---
+
+Session courte : ajout de la fonctionnalité d'édition des entrées. Choix Dialog shadcn (vs Sheet/inline) — focalisé, taille adaptée à 4 champs. Installation du composant `dialog.tsx` via CLI (déplacé manuellement `@\components\ui\` → `src\components\ui\`, bug Windows GLRN-121). Ajout de `updateEntry` dans `useEntries`, création de `EntryEditDialog`, bouton `Pencil` à côté du `Trash2` dans `EntryList`.
+
+Bug immédiat : les valeurs de l'entrée ne se pré-remplissaient pas dans la dialog. Cause : `onOpenChange(true)` n'est jamais appelé par Radix quand `open` est contrôlé depuis le parent — le callback ne sert qu'à la fermeture. La synchro dans `handleOpenChange` était du dead code. Fix : `useEffect(() => { if (open && entry) { /* sync */ } }, [open, entry])`.
+
+**Entrées clés :**
+
+- [LRN-034](learnings/LRN-034.md) — Dialog contrôlé extern : `onOpenChange(true)` jamais appelé
+
+---
+
+Session de polish UX sur le Dashboard. Ajout d'un bouton de tri (ascendant/descendant) des activités du journal, placé directement à côté du titre "Journal du jour". Icône `ArrowUpDown` + texte conditionnel ("Plus ancien d'abord" / "Plus récent d'abord"). Le tri est côté client via `.toSorted()` — les données restent triées desc en DB.
+
+Trois bugs d'animation résolus : (1) `layout` FLIP sans mouvement (flash uniquement) — cause : `LazyMotion features={domAnimation}` n'inclut pas les layout animations, fix `domMax` (GLRN-175) ; (2) flash de scrollbar verticale lors des changements de hauteur de liste — fix `scrollbar-gutter: stable` sur `html` (GLRN-176) ; (3) scroll-to-top à chaque navigation de date — cause : `setLoading(true)` dans le hook collapse la liste → hauteur page < position scroll → browser remonte, fix : `loading` initialisé à `true` au mount uniquement, les navigations suivantes sont silencieuses (GLRN-177).

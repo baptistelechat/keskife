@@ -1,4 +1,5 @@
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
 import {
   TAG_BADGE_BG,
   TAG_BADGE_TEXT,
@@ -28,9 +29,10 @@ interface Props {
   entries: Entry[];
   loading: boolean;
   onDelete: (id: string) => void;
+  onEdit: (entry: Entry) => void;
 }
 
-export function EntryList({ entries, loading, onDelete }: Props) {
+export function EntryList({ entries, loading, onDelete, onEdit }: Props) {
   if (loading) {
     return <p className="text-sm text-muted-foreground">Chargement...</p>;
   }
@@ -47,44 +49,60 @@ export function EntryList({ entries, loading, onDelete }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      {entries.map((entry) => (
-        <div
-          key={entry.id}
-          className="flex items-center gap-3 rounded-sm border bg-card px-4 py-3 shadow-sm"
-          style={{
-            borderLeftColor: TAG_COLORS[entry.tag],
-            borderLeftWidth: "3px",
-          }}
-        >
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">{entry.title}</p>
-            <p className="font-mono text-xs text-muted-foreground">
-              {timeLabel(entry.started_at)} → {timeLabel(entry.ended_at)} ·{" "}
-              {durationLabel(entry.started_at, entry.ended_at)}
-            </p>
-          </div>
-          <Badge
-            variant="outline"
+      <AnimatePresence>
+        {entries.map((entry) => (
+          <m.div
+            key={entry.id}
+            layout
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
+            className="flex items-center gap-3 rounded-sm border bg-card px-4 py-3 shadow-sm"
             style={{
-              backgroundColor: TAG_BADGE_BG[entry.tag],
-              color: TAG_BADGE_TEXT[entry.tag],
-              borderColor: TAG_COLORS[entry.tag] + "60",
+              borderLeftColor: TAG_COLORS[entry.tag],
+              borderLeftWidth: "3px",
             }}
-            className="shrink-0 font-mono text-[10px] uppercase tracking-wide"
           >
-            {TAG_LABELS[entry.tag]}
-          </Badge>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onDelete(entry.id)}
-            aria-label="Supprimer l'entrée"
-            className="shrink-0 size-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-          >
-            <Trash2 />
-          </Button>
-        </div>
-      ))}
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium">{entry.title}</p>
+              <p className="font-mono text-xs text-muted-foreground">
+                {timeLabel(entry.started_at)} → {timeLabel(entry.ended_at)} ·{" "}
+                {durationLabel(entry.started_at, entry.ended_at)}
+              </p>
+            </div>
+            <Badge
+              variant="outline"
+              style={{
+                backgroundColor: TAG_BADGE_BG[entry.tag],
+                color: TAG_BADGE_TEXT[entry.tag],
+                borderColor: TAG_COLORS[entry.tag] + "60",
+              }}
+              className="shrink-0 font-mono text-[10px] uppercase tracking-wide"
+            >
+              {TAG_LABELS[entry.tag]}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onEdit(entry)}
+              aria-label="Modifier l'entrée"
+              className="shrink-0 size-7 text-muted-foreground hover:text-foreground"
+            >
+              <Pencil />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onDelete(entry.id)}
+              aria-label="Supprimer l'entrée"
+              className="shrink-0 size-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            >
+              <Trash2 />
+            </Button>
+          </m.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 }
