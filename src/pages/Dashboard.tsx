@@ -60,7 +60,9 @@ export function Dashboard() {
               }
             >
               <ArrowUpDown className="size-3" />
-              {sortAsc ? "Plus ancien d'abord" : "Plus récent d'abord"}
+              <span className="hidden sm:inline">
+                {sortAsc ? "Plus ancien d'abord" : "Plus récent d'abord"}
+              </span>
             </Button>
           </div>
           <div className="flex items-center gap-1">
@@ -82,11 +84,13 @@ export function Dashboard() {
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="gap-2">
                   <CalendarIcon className="size-4" />
-                  {selectedDate.toLocaleDateString("fr-FR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
+                  <span className="hidden sm:inline">
+                    {selectedDate.toLocaleDateString("fr-FR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="end">
