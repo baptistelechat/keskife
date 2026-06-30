@@ -137,3 +137,37 @@ Second point : les tags `admin` et `formation` n'apparaissaient jamais dans les 
 
 - [BDR-011](decisions/BDR-011.md) — Script seed readline interactif
 - [LRN-022](learnings/LRN-022.md) — Cycling tag coprime pour couverture uniforme
+
+---
+
+Session courte d'intégration du logo Keskife dans la topbar. Ajout d'un `<img src="/icon.svg">` à côté du `<h1>` dans `App.tsx`, puis création de `public/icon-nobg.svg` (même calendrier sans le `<rect>` de fond) pour pouvoir afficher le logo plus grand sans le carré bleu. Le nom de l'app est masqué sur mobile via `hidden sm:block`.
+
+Principal point de friction : le viewBox initial était carré (276×276) alors que l'icône CalendarDays est plus haute que large dans le canvas 512×512 — padding horizontal résiduel visible. Résolu par le calcul du bounding box réel incluant le demi-stroke : `viewBox="132 120 248 272"`.
+
+**Entrées clés :**
+
+- [LRN-023](learnings/LRN-023.md) — SVG viewBox tight crop : bounding box réel + stroke/2
+
+---
+
+Session courte de responsive sur l'onglet Stats. Les graphiques (PieChart et BarChart) débordaient sur mobile. Deux causes identifiées et corrigées : (1) `outerRadius={110}` fixe en pixels — avec `aspect-video` (16:9), le container mobile fait ~350×197px, soit `min(w,h)/2 = 98px`, le rayon dépassait la hauteur disponible. Fix : `outerRadius="70%"` (relatif) + `cy="45%"` pour décaler le centre vers le haut et libérer de la place pour la légende + `w-full` obligatoire sur `ChartContainer`. (2) `ChartLegendContent` n'a pas de `flex-wrap` par défaut — avec 5 tags, la légende s'étendait en une ligne hors du container. Fix : `className="flex-wrap gap-x-4 gap-y-1"` passé en prop, mergé via `cn()`.
+
+**Entrées clés :**
+
+- [LRN-024](learnings/LRN-024.md) — Recharts Pie : outerRadius px → débordement mobile
+- [LRN-025](learnings/LRN-025.md) — ChartLegendContent shadcn sans flex-wrap → déborde
+
+---
+
+## 2026-06-30
+
+Session d'amélioration des composants Calendar à l'échelle de l'app. Trois axes : (1) localisation française (jours en français, semaine commençant le lundi via `fr` depuis `react-day-picker/locale`) ; (2) style weekends (texte rose-600/70 sur samedi/dimanche non-sélectionnés, via `getDay()` dans `CalendarDayButton` — le modifier `weekend` built-in n'existe pas en v10) ; (3) indicateur visuel des jours ayant des données (dot `bg-primary/70` en bas du numéro, caché si jour sélectionné).
+
+Pour le dot, `children` a dû être destructuré explicitement hors de `{...props}` dans `CalendarDayButton` pour pouvoir ajouter un élément sibling. Côté perf, ajout de `fetchActiveDaysInMonth(year, month)` dans `useEntries.ts` (ne sélectionne que `started_at`, déduplique les dates, retourne `Date[]`) et d'un hook `useMonthActivity(initialMonth)` encapsulant `useState(month)` + `useEffect([y, m])` avec deps primitives (pattern GLRN-051). Appliqué aux 4 usages Calendar : `EntryForm`, `Dashboard`, et les 2 popovers de `PeriodSelector`.
+
+**Entrées clés :**
+
+- [LRN-026](learnings/LRN-026.md) — react-day-picker/locale : fr avec weekStartsOn=1
+- [LRN-027](learnings/LRN-027.md) — children à destructurer de DayButton pour ajouter du JSX
+- [LRN-028](learnings/LRN-028.md) — getDay() pour weekends (modifier weekend absent rdp v10)
+- [LRN-029](learnings/LRN-029.md) — Pattern daysWithData : modifier custom + dot + hook par mois
