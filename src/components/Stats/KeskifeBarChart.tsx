@@ -76,7 +76,9 @@ export function KeskifeBarChart({ entries, groupBy }: Props) {
         />
         <YAxis tick={{ fontSize: 11 }} unit="h" />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={<ChartLegendContent />} />
+        <ChartLegend
+          content={<ChartLegendContent className="flex-wrap gap-x-4 gap-y-1" />}
+        />
         {TAGS.map((tag) => (
           <Bar
             key={tag}

@@ -35,20 +35,27 @@ export function KeskifePieChart({ data }: Props) {
   }));
 
   return (
-    <ChartContainer config={chartConfig} className="min-h-[280px]">
+    <ChartContainer config={chartConfig} className="min-h-[280px] w-full">
       <PieChart>
         <Pie
           data={chartData}
           dataKey="value"
           nameKey="name"
           cx="50%"
-          cy="50%"
-          outerRadius={110}
+          cy="45%"
+          outerRadius="70%"
         />
         <ChartTooltip
           content={<ChartTooltipContent nameKey="tag" hideLabel />}
         />
-        <ChartLegend content={<ChartLegendContent nameKey="tag" />} />
+        <ChartLegend
+          content={
+            <ChartLegendContent
+              nameKey="tag"
+              className="flex-wrap gap-x-4 gap-y-1"
+            />
+          }
+        />
       </PieChart>
     </ChartContainer>
   );
